@@ -13,6 +13,7 @@ cmaRs.fit <- function(x = stop("no 'x' argument"),
                            y = stop("no 'y' argument"),
                            data = parent.frame(),
                            classification = classification,
+				   threshold.class = 0.5,
                            degree = 1,
                            nk = 21,
                            Auto.linpreds = FALSE)
@@ -67,7 +68,7 @@ model_mars <- earth(formula, data = data, degree = degree,
 }else{
 # constructs only the backward step of MARS model
 model_mars <- earth(formula, degree = degree, nk = nk, 
-pmethod="none", trace=4, Auto.linpreds = Auto.linpreds, data) 
+pmethod = "none", trace = 4, Auto.linpreds = Auto.linpreds, data) 
 }
 # return the model with the "intercept" as the first row
 bfs_forward_names <- rownames(model_mars$dirs) 
@@ -143,7 +144,7 @@ bf.vector1 <- str_replace_all(bf.vector, "h\\(", "\\(")
 bf.vector <- bf.vector1
 
 # delete reduntant information (Intercept) from vector of BF
-bf.vector <- bf.vector[2:length(bf.vector)] 
+bf.vector <- bf.vector[2 : length(bf.vector)] 
 # replace "x" with "xfirst"
 k <- str_replace_all(bf.vector, "x", "xfirst") 
 bf.vector <- k
@@ -441,7 +442,7 @@ avg.y <-  mean(y)
 
 if (classification == TRUE)
 {
-threshold <- 0.5
+threshold <- threshold.class
 fitted.binary <- c()
 for(i in 1:n)
 {

@@ -16,9 +16,10 @@ An S3 model of class "plot.cmaRs"
 }
 \description{
 This function allows you to construct three different plots, 
-namely actual versus predicted response; fitted values versus residuals; 
-and residuals versus order if the model is constructed 
-for prediction purpose.
+namely actual versus predicted response; 
+fitted values versus standardized residuals; 
+and standardized residuals versus order if the model is 
+constructed for prediction purpose.
 }
 \examples{
 \dontrun{

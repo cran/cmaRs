@@ -1,9 +1,10 @@
 #' A plot function designed for prediction of CMARS 
 #'
 #' This function allows you to construct three different plots, 
-#' namely actual versus predicted response; fitted values versus residuals; 
-#' and residuals versus order if the model is constructed 
-#' for prediction purpose.
+#' namely actual versus predicted response; 
+#' fitted values versus standardized residuals; 
+#' and standardized residuals versus order if the model is 
+#' constructed for prediction purpose.
 #' @param x A cmaRs object which is obtained by prediction.
 #' @param ... Additional parameters.
 #' @importFrom stats model.response
@@ -26,7 +27,7 @@ if(x$classification == TRUE){stop("Graphs are designed for prediction!\n")}
 fitted.values <- x$fitted.values
 actual.values <- x$y
 r <- x$r
-residuals <- x$residuals
+residuals <- scale(x$residuals, scale = TRUE, center = TRUE)[,1]
 
 oldpar <- par(no.readonly = TRUE)
 on.exit(par(oldpar))
@@ -37,16 +38,16 @@ plot(actual.values, fitted.values,
   col = "firebrick", main = "Actual versus Predicted Response Values",
   xlab = "Actual Response", ylab = "Predicted Response")
 abline(a = 0, b = 1,  col = "gray0")
-text(x = min(actual.values) + 0.0001, y = max(fitted.values) - 0.0001, 
+text(x = min(actual.values) + 0.0001, 
+y = max(fitted.values) - ((max(fitted.values) - min(fitted.values))/2), 
 bquote(paste(rho(Y, hat(Y))) == .(r)), cex = 1, pos = 4)
 plot(fitted.values, residuals,  col = "firebrick", 
-main = "Fitted Values versus Residuals", xlab = "Fitted Values", 
-ylab = "Residuals")
+main = "Fitted Values versus Standardized Residuals", xlab = "Fitted Values", 
+ylab = "Standardized Residuals")
 abline(h = 0, col="black")
-plot(residuals, type = "o", col = "black",  main = "Residuals versus Order", 
-xlab = "Observation Order", ylab = "Residuals")
+plot(residuals, type = "o", col = "black", 
+main = "Standardized Residuals versus Order", 
+xlab = "Observation Order", ylab = "Standardized Residuals")
 class(all.plots) <- "plot.cmaRs"
 invisible(all.plots)
 }
-
-

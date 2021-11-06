@@ -8,6 +8,7 @@ cmaRs(
   formula,
   data,
   classification = FALSE,
+  threshold.class = 0.5,
   degree = 1,
   nk = 20,
   Auto.linpreds = FALSE
@@ -21,6 +22,9 @@ containing the variables in the model.}
 
 \item{classification}{Logical: If FALSE, a prediction 
 model will be constructed.}
+
+\item{threshold.class}{If the model is classification, this threshold
+is used to convert probabilities to classes. Default is 0.5.}
 
 \item{degree}{Maximum degree of interaction (Friedman's mi). 
 Default is 1, meaning build an additive model (i.e., no interaction terms).}

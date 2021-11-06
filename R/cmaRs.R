@@ -11,6 +11,8 @@
 #' for detailed explanation please check earth package.
 #' @param classification Logical: If FALSE, a prediction 
 #' model will be constructed.
+#' @param threshold.class If the model is classification, this threshold
+#' is used to convert probabilities to classes. Default is 0.5.
 #' @param data An optional data frame, list or environment 
 #' containing the variables in the model.
 #' @importFrom stats model.response
@@ -31,7 +33,7 @@
 
 
 cmaRs <- function(formula, data, classification = FALSE,  
-       degree = 1,  nk = 20, Auto.linpreds = FALSE)
+       threshold.class = 0.5, degree = 1,  nk = 20, Auto.linpreds = FALSE)
 {
 
     mf <- match.call(expand.dots = FALSE)
@@ -49,7 +51,7 @@ cmaRs <- function(formula, data, classification = FALSE,
     x <- as.data.frame(x[, -1])
     colnames(x) <- c.names
       fit <- cmaRs.fit(x, y, degree = degree, nk = nk, 
-      classification = classification, data)
+      classification = classification, threshold.class = threshold.class, data)
     fit$call <- match.call()
     fit$formula <- formula
     fit$terms <- terms

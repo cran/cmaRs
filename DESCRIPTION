@@ -1,7 +1,7 @@
 Package: cmaRs
 Title: Implementation of the Conic Multivariate Adaptive Regression
         Splines in R
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     c(person("Fatma", "Yerlikaya-Ozkurt", email = "fatma.yerlikaya@atilim.edu.tr", role = "aut"),
 	   person("Ceyda", "Yazici", email = "ceydayazici86@gmail.com", role = c("aut", "cre")),
@@ -25,11 +25,12 @@ Description: An implementation of 'Conic Multivariate Adaptive Regression Spline
 License: GPL (>= 2)
 BugReports: https://github.com/yaziciceyda/cmaRs/issues
 Encoding: UTF-8
-LazyData: true
 Imports: earth, graphics, Rmosek, stats, stringr, utils, Matrix, AUC,
         Ryacas0
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 NeedsCompilation: no
-Packaged: 2021-02-19 09:58:55 UTC; ceyda.yazici
+Packaged: 2021-11-06 11:56:24 UTC; Ceyda
 Repository: CRAN
-Date/Publication: 2021-02-22 11:00:02 UTC
+Suggests: testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Date/Publication: 2021-11-06 12:10:02 UTC
