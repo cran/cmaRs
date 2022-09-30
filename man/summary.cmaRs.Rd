@@ -22,6 +22,7 @@ This function allows you to print the output of CMARS model.
 # Without \code{MOSEK}, the example code is not executable.
 # For installation of Mosek, plese see the documentation of 'Rmosek'.
 data("trees", package = "datasets")
-model.prediction <- cmaRs(Volume~., degree = 5, nk = 20, data = trees)
-summary.cmaRs(model.prediction)}
+model.prediction <- cmaRs(Volume ~ ., degree = 5, nk = 20, data = trees)
+summary.cmaRs(model.prediction)
+}
 }

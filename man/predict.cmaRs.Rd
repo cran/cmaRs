@@ -24,6 +24,7 @@ This function allows you to obtain the predicted values of a CMARS model.
 # Without \code{MOSEK}, the example code is not executable.
 # For installation of Mosek, plese see the documentation of 'Rmosek'.
 data("trees", package = "earth")
-model.prediction <- cmaRs(Volume~., degree = 5, nk = 20, data = trees)
-predict.cmaRs(model.prediction, data = trees)}
+model.prediction <- cmaRs(Volume ~ ., degree = 5, nk = 20, data = trees)
+predict.cmaRs(model.prediction, data = trees)
+}
 }

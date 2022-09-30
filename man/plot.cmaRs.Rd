@@ -15,17 +15,20 @@
 An S3 model of class "plot.cmaRs"
 }
 \description{
-This function allows you to construct three different plots, 
-namely actual versus predicted response; 
-fitted values versus standardized residuals; 
-and standardized residuals versus order if the model is 
-constructed for prediction purpose.
+This function allows you to construct three different plots,
+namely actual versus predicted response;
+fitted values versus standardized residuals;
+and standardized residuals versus order if the model is
+constructed for prediction purpose. Moreover, Receiver
+Operating Characteristic Curve of classification models
+can be produced.
 }
 \examples{
 \dontrun{
 # Without \code{MOSEK}, the example code is not executable.
 # For installation of Mosek, plese see the documentation of 'Rmosek'.
 data("trees", package = "datasets")
-model.prediction <- cmaRs(Volume~., degree = 5, nk = 20, data = trees)
-plot.cmaRs(model.prediction)}
+model.prediction <- cmaRs(Volume ~ ., degree = 5, nk = 20, data = trees)
+plot.cmaRs(model.prediction)
+}
 }

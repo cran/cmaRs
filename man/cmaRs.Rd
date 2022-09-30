@@ -17,23 +17,23 @@ cmaRs(
 \arguments{
 \item{formula}{A symbolic description of the model to be fitted.}
 
-\item{data}{An optional data frame, list or environment 
+\item{data}{An optional data frame, list or environment
 containing the variables in the model.}
 
-\item{classification}{Logical: If FALSE, a prediction 
+\item{classification}{Logical: If FALSE, a prediction
 model will be constructed.}
 
 \item{threshold.class}{If the model is classification, this threshold
 is used to convert probabilities to classes. Default is 0.5.}
 
-\item{degree}{Maximum degree of interaction (Friedman's mi). 
+\item{degree}{Maximum degree of interaction (Friedman's mi).
 Default is 1, meaning build an additive model (i.e., no interaction terms).}
 
 \item{nk}{Maximum number of model terms before pruning,
-i.e., the maximum number of terms created by the forward pass. 
+i.e., the maximum number of terms created by the forward pass.
 Includes the intercept.}
 
-\item{Auto.linpreds}{Default is TRUE, 
+\item{Auto.linpreds}{Default is TRUE,
 for detailed explanation please check earth package.}
 }
 \value{
@@ -46,9 +46,16 @@ This function allows you to construct a CMARS Model.
 \dontrun{
 # Without \code{MOSEK}, the example code is not executable.
 # For installation of Mosek, plese see the documentation of 'Rmosek'.
+data(table.b6)
+model.ex1 <- cmaRs(y ~ .,
+  degree = 2, nk = 20, classification = FALSE,
+  Auto.linpreds = FALSE, data = table.b6
+)
 data("trees", package = "datasets")
-model.prediction <- cmaRs(Volume~., degree = 5, nk = 20, data = trees)
+model.prediction <- cmaRs(Volume ~ ., degree = 5, nk = 20, data = trees)
 data("etitanic", package = "earth")
-model.classification <- cmaRs(survived~age, 
-data = etitanic, classification = TRUE)}
+model.classification <- cmaRs(survived ~ age,
+  data = etitanic, classification = TRUE
+)
+}
 }
