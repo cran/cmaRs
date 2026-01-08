@@ -1,7 +1,7 @@
 #' @importFrom earth earth
 #' @importFrom stringr str_replace_all
-#' @importFrom Ryacas0 yacas
-#' @importFrom Ryacas0 Sym
+#' @importFrom Ryacas yac_symbol
+#' @importFrom Ryacas as_y
 #' @importFrom stats as.formula
 #' @importFrom stats binomial
 #' @importFrom stats cor
@@ -16,10 +16,10 @@ cmaRs.fit <- function(x = stop("no 'x' argument"),
                       degree = 1,
                       nk = 21,
                       Auto.linpreds = FALSE)
-                      # this function prepares the data for cmars modeling,
-                      # takes the BFs from MARS,
-                      # constructs a CMARS models and
-# then calculates the performance measures
+  # this function prepares the data for cmars modeling,
+  # takes the BFs from MARS,
+  # constructs a CMARS models and
+  # then calculates the performance measures
 {
   empt.vector <- c()
   for (i in 1:dim(data)[2])
@@ -42,8 +42,8 @@ cmaRs.fit <- function(x = stop("no 'x' argument"),
   }
 
   formula <- eval(stats::as.formula(paste(response.name,
-    "~", pred.names,
-    sep = ""
+                                          "~", pred.names,
+                                          sep = ""
   )))
   p <- dim(x)[2] # number of independent variables
   n <- length(y) # number of observations
@@ -66,16 +66,16 @@ cmaRs.fit <- function(x = stop("no 'x' argument"),
   if (classification == TRUE) {
     # constructs only the backward step of MARS model
     model_mars <- earth::earth(formula,
-      degree = degree,
-      nk = nk, glm = list(family = stats::binomial, maxit = 1000),
-      pmethod = "forward",
-      trace = 4, Auto.linpreds = Auto.linpreds, data
+                               degree = degree,
+                               nk = nk, glm = list(family = stats::binomial, maxit = 1000),
+                               pmethod = "forward",
+                               trace = 4, Auto.linpreds = Auto.linpreds, data
     )
   } else {
     # constructs only the backward step of MARS model
     model_mars <- earth::earth(formula,
-      degree = degree, nk = nk,
-      pmethod = "forward", trace = 4, Auto.linpreds = Auto.linpreds, data
+                               degree = degree, nk = nk,
+                               pmethod = "forward", trace = 4, Auto.linpreds = Auto.linpreds, data
     )
   }
   # return the model with the "intercept" as the first row
@@ -121,8 +121,8 @@ cmaRs.fit <- function(x = stop("no 'x' argument"),
     f <- paste("xfirst", istr, "<- xsort", istr, "[1] - 0.1", sep = "")
     anew <- eval(parse(text = f))
     g <- paste("xfirst", istr, "<-", "c(", "xfirst", istr, ",",
-      "xsort", istr, ")",
-      sep = ""
+               "xsort", istr, ")",
+               sep = ""
     )
     bnew <- eval(parse(text = g))
     xfirst_data <- cbind(xfirst_data, bnew) # that will be used in DMS
@@ -144,8 +144,8 @@ cmaRs.fit <- function(x = stop("no 'x' argument"),
     h <- paste("xplus", istr, "<- xfirst", istr, "[n+1] + 0.1", sep = "")
     anew <- eval(parse(text = h))
     k <- paste("xplus", istr, "<-", "c(", "xfirst", istr, ",",
-      "xplus", istr, ")",
-      sep = ""
+               "xplus", istr, ")",
+               sep = ""
     )
     bnew <- eval(parse(text = k))
   }
@@ -258,10 +258,9 @@ cmaRs.fit <- function(x = stop("no 'x' argument"),
     bf.cmars <- c.new3
     # construction of BF matrix as a
     # symbol to take symbolic derivative
-    Ryacas0::yacas(Ryacas0::Sym(b1))
     # built-in function yacas
     # uploaded for symbolic derivatives
-    BF <- Ryacas0::yacas("Simplify(%)")
+    BF <- Ryacas::simplify(Ryacas::yac_symbol(b1))
     # reduce the expression to a simples form
     for (j in 1:numBF)
     {
@@ -276,8 +275,7 @@ cmaRs.fit <- function(x = stop("no 'x' argument"),
       c <- paste("BFMS", cf, " <- ", f, sep = "")
       eval(parse(text = c))
     }
-    Ryacas0::yacas(Ryacas0::Sym(f))
-    BFMS <- Ryacas0::yacas("Simplify(%)")
+    BFMS <- Ryacas::simplify(Ryacas::yac_symbol(f))
     # BFMS: symbolic BF in terms of maximum function
     gg <- stringr::str_replace_all(ff, "first", "")
     BasisFunctions <- cbind(BasisFunctions, eval(parse(text = gg)))
@@ -286,11 +284,13 @@ cmaRs.fit <- function(x = stop("no 'x' argument"),
     DM <- matrix(0, nrow <- p, ncol <- p)
     # VARM: variable names whose derivative exists in DM
     VARM <- matrix(1, nrow <- p, ncol <- p)
-    elm.dms <- Ryacas0::Sym(0)
-    DMS <- matrix(elm.dms, nrow <- p, ncol <- p)
+
+    DMS <- matrix(Ryacas::as_y("0"), p, p)
+
     # symbolic derivative matrix (DM)
-    elm.varms <- Ryacas0::Sym(1)
-    VARMS <- matrix(elm.varms, nrow <- p, ncol <- p) # symbolic version of VARM
+
+    VARMS <- matrix(Ryacas::as_y("1"), p, p)
+
     for (j in 1:p)
     {
       if (maxint == 2) {
@@ -301,7 +301,7 @@ cmaRs.fit <- function(x = stop("no 'x' argument"),
         DMS <- (cmaRs.derivative_one(BF, DMS, j, b1))$DMS
         numeric1 <- eval(parse(text = DMS[j, j]))
       }
-      if (DMS[j, j] != "0") {
+      if (as.character(DMS[j, j]) != "0") {
         VARMS[j, j] <- paste("xplus", as.character(j), sep = "")
       }
       # two-interaction case
@@ -354,7 +354,7 @@ cmaRs.fit <- function(x = stop("no 'x' argument"),
     {
       for (k in j:p)
       {
-        if (VARMS[j, k] != "1") {
+        if (as.character(VARMS[j, k]) != "1") {
           VS <- VARMS[j, k]
           V <- eval(parse(text = VS))
           DV <- diff(V) # take the difference [(x2-x1),(x3-x2),...,(x_N+1-x_N)]

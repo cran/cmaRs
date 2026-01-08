@@ -16,6 +16,7 @@
 #' @param data An optional data frame, list or environment
 #' containing the variables in the model.
 #' @importFrom stats model.response
+#' @importFrom stats model.matrix
 #' @return An S3 model of class "cmaRs"
 #' @export
 #' @examples

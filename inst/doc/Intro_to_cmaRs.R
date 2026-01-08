@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -22,7 +22,7 @@ head(table.b6)
 ## ----echo=TRUE,  results='hide', eval=FALSE-----------------------------------
 #  prediction.model <-  cmaRs(Volume ~ ., degree = 2, nk = 20, data = trees)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  summary(prediction.model)
 #  #> Call:
 #  #> cmaRs(formula = Volume ~ ., data = trees, degree = 2, nk = 20)
